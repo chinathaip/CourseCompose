@@ -1,0 +1,24 @@
+version: '3.5'
+
+networks:
+  integration-test:
+
+
+services:
+  it_tests:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.it-test
+    volumes:
+      - $PWD:/go/src
+    depends_on:
+      - db
+    networks:
+      - integration-test
+
+  db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    networks:
+      - integration-test

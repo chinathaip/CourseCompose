@@ -1,0 +1,6 @@
+FROM golang:1.19-alpine
+
+WORKDIR /go/src
+
+CMD CGO_ENABLED=0 go test -v --tags=integration ./...
+#CGO - allow go to use some shared lib from C -> disabling this reduces build time, and file size
