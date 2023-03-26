@@ -9,10 +9,10 @@ import (
 )
 
 type Handler struct {
-	mongoService *service.MongoService
+	mongoService service.MongoService
 }
 
-func NewHandler(mongoService *service.MongoService) *Handler {
+func NewHandler(mongoService service.MongoService) *Handler {
 	return &Handler{mongoService: mongoService}
 }
 
