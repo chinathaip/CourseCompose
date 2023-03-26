@@ -22,3 +22,5 @@ services:
       - 27017:27017
     networks:
       - integration-test
+    # volumes:
+    #   - ./data:/docker-entrypoint-initdb.d
