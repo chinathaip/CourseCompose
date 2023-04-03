@@ -13,8 +13,14 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    
     steps:
     - uses: actions/checkout@v3
+
+    - name: Setup SHA
+      run: echo "GITHUB_SHA=${GITHUB_SHA}" >> $GITHUB_ENV
 
     - name: Set up Go
       uses: actions/setup-go@v3
@@ -33,7 +39,7 @@ jobs:
         docker-compose -f docker-compose.it-test.yml up --abort-on-container-exit --exit-code-from it_tests
 
     - name: Build Docker Image
-      run: docker build . -f Dockerfile --tag ghcr.io/chinathaip/coursecompose:${{ env.GITHUB_SHA }}
+      run: docker build . --file Dockerfile --tag ghcr.io/chinathaip/coursecompose:${{ env.GITHUB_SHA }}
 
     - name: Login ghcr.io
       uses: docker/login-action@v1.8.0
@@ -49,7 +55,7 @@ jobs:
         context: .
         tags: |
           ghcr.io/chinathaip/coursecompose:${{ env.GITHUB_SHA }}
-        push: $${{ github.ref == 'refs/heads/main' }}
-    
+        push: ${{ github.ref == 'refs/heads/main' }}
+
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
